@@ -1,1 +1,1 @@
-# vue-todo
+# babel6-react-starter
