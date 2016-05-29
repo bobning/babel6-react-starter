@@ -12,7 +12,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/dist/',
+    publicPath: process.env.DEBUG ? '/dist/' : 'your cdn url',
     filename: '[name].[chunkhash:8].min.js'
   },
   resolve: {
