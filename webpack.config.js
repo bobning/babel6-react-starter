@@ -2,10 +2,12 @@
 var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var pkg = require('./package.json');
 
 module.exports = {
   entry: {
-    libs: ['react', 'react-dom', 'isomorphic-fetch'],
+    vendor: ['react', 'react-dom', 'isomorphic-fetch'],
     index: ['./src/entry/index'],
     news: ['./src/entry/news'],
     stock: ['./src/entry/stock']
@@ -13,7 +15,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     publicPath: process.env.DEBUG ? '/dist/' : 'your cdn url',
-    filename: '[name].[chunkhash:8].min.js'
+    filename: pkg.version + '/[name].min.js'
   },
   resolve: {
     extensions: ['', '.json', '.jsx', '.js', '.css', '.less', '.jpg', '.png', '.gif']
@@ -21,23 +23,24 @@ module.exports = {
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'libs',
-      filename: 'libs.[hash:8].min.js'
+      name: 'vendor',
+      filename: 'vendor.[hash:8].min.js'
     }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false
       }
     }),
+    new ExtractTextPlugin('./src/css/[name]', 'css/[name].[hash:8].min.css'),
     new HtmlWebpackPlugin({
       title: 'index',
-      chunks: ['libs', 'index'],
+      chunks: ['vendor', 'index'],
       filename: 'index.html',
       template: './src/base.html'
     }),
     new HtmlWebpackPlugin({
       title: 'news',
-      chunks: ['libs', 'news'],
+      chunks: ['vendor', 'news'],
       filename: 'news.html',
       template: './src/base.html'
     })
@@ -57,8 +60,8 @@ module.exports = {
         include: __dirname
       },
       {
-        test: /\.less/,
-        loader: 'style-loader!css-loader!less-loader'
+        test: /\.less$/,
+        loader: ExtractTextPlugin.extract('style-loader','css-loader!less-loader')
       }
     ]
   }
