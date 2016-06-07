@@ -4,11 +4,12 @@ const config = require('./webpack.config.js');
 
 const host = '0.0.0.0'
 const port = 8080
+const url = 'http://'+ host + ':'+ port
 
 config.devtool = 'source-map';
 
 for (let e in config.entry) {
-  config.entry[e].unshift('webpack-dev-server/client?http://'+ host + ':'+ port +'/', 'webpack/hot/dev-server');
+  config.entry[e].unshift('webpack-dev-server/client?' + url, 'webpack/hot/dev-server');
 }
 
 config.plugins.push(new webpack.HotModuleReplacementPlugin());
@@ -19,10 +20,13 @@ const server = new WebpackDevServer(webpack(config), {
   hot: true,
   historyApiFallback: true,
   progress: true,
-  inline: true
+  inline: true,
+  proxy: {
+    '*.html': url + config.output.publicPath
+  }
 });
 
 server.listen(port, host, function(err, ret) {
   if (err) console.log(err)
-  console.log('listening at ' + host + ':' + port)
+  console.log('listening at ' + url)
 });

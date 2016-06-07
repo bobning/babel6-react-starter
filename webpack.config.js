@@ -5,7 +5,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var pkg = require('./package.json');
 
-module.exports = {
+var config = {
   entry: {
     vendor: ['react', 'react-dom', 'isomorphic-fetch'],
     index: ['./src/entry/index'],
@@ -25,11 +25,6 @@ module.exports = {
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       filename: 'vendor.[hash:8].min.js'
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      }
     }),
     new ExtractTextPlugin('./src/css/[name]', 'css/[name].[hash:8].min.css'),
     new HtmlWebpackPlugin({
@@ -60,9 +55,24 @@ module.exports = {
         include: __dirname
       },
       {
+        test: /\.json$/,
+        loader: 'json-loader'
+      },
+      {
         test: /\.less$/,
         loader: ExtractTextPlugin.extract('style-loader','css-loader!less-loader')
       }
     ]
   }
 };
+
+if (!process.env.DEBUG) {
+  new webpack.optimize.UglifyJsPlugin({
+    compress: {
+      warnings: false
+    }
+  })
+}
+
+
+module.exports = config
