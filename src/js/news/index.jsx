@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import '../css/base';
+import './news.less';
 
 
 class HelloWorld extends Component {
@@ -10,7 +10,7 @@ class HelloWorld extends Component {
   
   render() {
     return (
-      <div>
+      <div className='img1'>
           <a href='index.html'>Hello World!!</a>
       </div>
     );

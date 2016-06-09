@@ -20,13 +20,10 @@ const server = new WebpackDevServer(webpack(config), {
   hot: true,
   historyApiFallback: true,
   progress: true,
-  inline: true,
-  proxy: {
-    '*.html': url + config.output.publicPath
-  }
+  inline: true
 });
 
 server.listen(port, host, function(err, ret) {
   if (err) console.log(err)
-  console.log('listening at ' + url)
+  console.log('listening at ' + url + config.output.publicPath)
 });

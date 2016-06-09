@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import '../css/base';
-import AreaCascader from '../js/libs/areaCascader';
-import areaData from '../../mock/area';
+import './index.less';
+import AreaCascader from '../components/areaCascader';
+import areaData from '../../../mock/area';
 
 
 class HelloWorld extends Component {
@@ -18,7 +18,7 @@ class HelloWorld extends Component {
   render() {
     return (
       <div>
-          <a href='news.html'>Hello World!!</a>
+          <a href='./news.html'>Hello World!!</a>
           <AreaCascader data={ areaData.provinces } options={{
               prov: '',
               city: '',
